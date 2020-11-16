@@ -74,12 +74,12 @@ class TicTacToe
         input = gets.strip
         index = input_to_index(input)
         if valid_move?(index)
-            move(index)
+            move(index, current_player)
             display_board
         else
             input = gets.strip
         end
-        current_player
+        
     end
 
     def won?
@@ -90,21 +90,38 @@ class TicTacToe
     end
 
     def full?
-      @board.each do |combo|
+      @board.each do |board_space|
        
-           if combo == " "
+           if board_space == " "
             return false
            end
         end
     end
     
     def draw?
-        if @board.full?
-            return true
-        elsif @board.won?
-            return false
-        else
-            false
+       full? && !won?
+    end
+
+    def over?
+        full? || won?
+    end
+    
+    def winner 
+        if won? 
+            @board[won?[0]] 
         end
     end
-  end
+
+    def play
+        until over? || draw?
+            turn
+        end
+       if  won?
+            puts "Congratulations #{winner}!"
+       
+       else draw?
+            puts "Cat's Game!"
+        end
+        
+    end
+end
